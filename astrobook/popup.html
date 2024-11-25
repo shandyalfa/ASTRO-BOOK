@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Popup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Popup Background Overlay */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            z-index: 1000;
+        }
+
+        /* Popup Container */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: #ffffff;
+            box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
+            z-index: 1010;
+        }
+
+        .popup .icon {
+            font-size: 50px;
+            color: #007bff;
+            margin-bottom: 15px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .popup h2 {
+            margin: 0;
+            font-size: 28px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .popup p {
+            margin: 15px 0;
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .popup button {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            margin: 5px;
+        }
+
+        .popup button:hover {
+            background: linear-gradient(135deg, #0056b3, #003c82);
+        }
+
+        /* Active state for Popup */
+        .popup-overlay.active,
+        .popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Style for "Yes or No" buttons */
+        .popup .button-choices {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .popup .button-choices button {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Trigger Buttons -->
+    <div>
+        <button id="openPopupSuccess" style="padding: 10px 20px; border: none; border-radius: 50px; background: linear-gradient(135deg, #007bff, #0056b3); color: #fff; font-size: 16px; cursor: pointer; font-weight: bold; margin: 10px;">
+            Show Success Popup
+        </button>
+        <button id="openPopupChoice" style="padding: 10px 20px; border: none; border-radius: 50px; background: linear-gradient(135deg, #ff7e5f, #ff6a5b); color: #fff; font-size: 16px; cursor: pointer; font-weight: bold; margin: 10px;">
+            Show Choice Popup
+        </button>
+    </div>
+
+    <!-- Popup Structure -->
+    <div class="popup-overlay" id="popupOverlay"></div>
+
+    <!-- Success Popup -->
+    <div class="popup" id="popupSuccess">
+        <div class="icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2>Success!</h2>
+        <p>Your action was completed successfully. Thank you for using our service!</p>
+        <button id="closePopupSuccess">Close</button>
+    </div>
+
+    <!-- Choice Popup -->
+    <div class="popup" id="popupChoice">
+        <div class="icon">
+            <i class="fas fa-question-circle"></i>
+        </div>
+        <h2>Are you sure?</h2>
+        <p>Do you want to proceed with this action?</p>
+        <div class="button-choices">
+            <button id="choiceYes" style="background: linear-gradient(135deg, #28a745, #218838);">Yes</button>
+            <button id="choiceNo" style="background: linear-gradient(135deg, #dc3545, #c82333);">No</button>
+        </div>
+    </div>
+
+    <script>
+        // Get elements for Success Popup
+        const openPopupSuccess = document.getElementById('openPopupSuccess');
+        const closePopupSuccess = document.getElementById('closePopupSuccess');
+        const popupSuccess = document.getElementById('popupSuccess');
+
+        // Get elements for Choice Popup
+        const openPopupChoice = document.getElementById('openPopupChoice');
+        const popupChoice = document.getElementById('popupChoice');
+        const choiceYes = document.getElementById('choiceYes');
+        const choiceNo = document.getElementById('choiceNo');
+
+        // Overlay
+        const popupOverlay = document.getElementById('popupOverlay');
+
+        // Open Success Popup
+        openPopupSuccess.addEventListener('click', () => {
+            popupSuccess.classList.add('active');
+            popupOverlay.classList.add('active');
+        });
+
+        // Close Success Popup
+        closePopupSuccess.addEventListener('click', () => {
+            popupSuccess.classList.remove('active');
+            popupOverlay.classList.remove('active');
+        });
+
+        // Open Choice Popup
+        openPopupChoice.addEventListener('click', () => {
+            popupChoice.classList.add('active');
+            popupOverlay.classList.add('active');
+        });
+
+        // Close Choice Popup
+        choiceYes.addEventListener('click', () => {
+            alert('You selected Yes!');
+            popupChoice.classList.remove('active');
+            popupOverlay.classList.remove('active');
+        });
+
+        choiceNo.addEventListener('click', () => {
+            alert('You selected No!');
+            popupChoice.classList.remove('active');
+            popupOverlay.classList.remove('active');
+        });
+
+        // Close any Popup by clicking the overlay
+        popupOverlay.addEventListener('click', () => {
+            popupSuccess.classList.remove('active');
+            popupChoice.classList.remove('active');
+            popupOverlay.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
